@@ -2,7 +2,9 @@ class Solution {
     public void gameOfLife(int[][] board) {
         int ySize = board.length;
         int xSize = board[0].length;
-        int[][] secondBoard = new int[ySize][xSize];
+        // int[][] secondBoard = new int[ySize][xSize];
+        int[][] changes = new int[ySize * xSize][3];
+        int changeIndex = 0;
 
         for (int i = 0; i < ySize; i++) {
             for (int j = 0; j < xSize; j++) {
@@ -17,25 +19,23 @@ class Solution {
 
                 if (board[i][j] == 1) {
                     if (lives < 2 || lives > 3) {
-                        secondBoard[i][j] = 0;
+                        changes[changeIndex] = new int[]{i, j, 0};
                     } else {
-                        secondBoard[i][j] = 1;
+                        changes[changeIndex] = new int[]{i, j, 1};
                     }
                 } else {
                     if (lives == 3) {
-                        secondBoard[i][j] = 1;
+                        changes[changeIndex] = new int[]{i, j, 1};
                     } else {
-                        secondBoard[i][j] = 0;
+                        changes[changeIndex] = new int[]{i, j, 0};
                     }
                 }
+                changeIndex += 1;
             }
         }
-        
-        // board = secondBoard.clone();
-        for (int i = 0; i < ySize; i++) {
-            for (int j = 0; j < xSize; j++) {
-                board[i][j] = secondBoard[i][j];
-            }
+
+        for (int[] change : changes) {
+            board[change[0]][change[1]] = change[2];
         }
     }
 }
